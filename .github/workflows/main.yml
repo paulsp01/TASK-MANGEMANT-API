@@ -1,0 +1,59 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to the main branch
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Specify your Node.js version
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test  # Run this job only after the build-and-test job completes successfully
+    if: github.ref == 'refs/heads/main'  # Only deploy from the main branch
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build  # Adjust if you have a specific build command
+
+    - name: Deploy
+      run: |
+        echo "Deploying application..."
+        # Add your deployment commands here, e.g. for deploying to Heroku, AWS, etc.
+        # Example for Heroku:
+        # git remote add heroku https://git.heroku.com/your-app.git
+        # git push heroku main
+        # Or use deployment tools like AWS CLI, Azure CLI, etc.
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}  # Example for sensitive information
