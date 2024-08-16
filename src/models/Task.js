@@ -25,7 +25,7 @@ const taskSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true, // Ensure this is true if it's a required field
+      required: true,
     },
     assignedUser: {
       type: mongoose.Schema.Types.ObjectId,

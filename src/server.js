@@ -4,14 +4,14 @@ const connectDB = require("./config/db");
 
 dotenv.config();
 
-// Connect to database
+
 connectDB();
 
 const app = express();
 
 app.use(express.json());
 
-// Routes
+
 app.use("/api", require("./routes/authRoute"));
 app.use("/api", require("./routes/taskRoute"));
 
